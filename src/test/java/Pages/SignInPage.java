@@ -96,8 +96,8 @@ public class SignInPage {
 
 	}
 
-	public void Login(String username, String password) throws InterruptedException {
-		Thread.sleep(1000);
+	public void Login(String username, String password) {
+
 		UsernameInputbox.sendKeys(username);
 		PasswordInputbox.sendKeys(password);
 		LoginButton.click();
