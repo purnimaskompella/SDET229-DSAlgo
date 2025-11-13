@@ -53,7 +53,7 @@ public class SignInStepDef {
 //	}
 
 	@When("User enters {string},{string} and clicks on Login.")
-	public void user_enters_and_clicks_on_login(String username, String password) throws InterruptedException {
+	public void user_enters_and_clicks_on_login(String username, String password) {
 		signIn.Login(username, password);
 
 	}
