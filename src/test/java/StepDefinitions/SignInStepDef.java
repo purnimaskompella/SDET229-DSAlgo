@@ -1,57 +1,66 @@
 package StepDefinitions;
-import Pages.SignInPage;
 
-import io.cucumber.java.en.*;
+import org.testng.Assert;
+
+import Pages.LaunchPage;
+import Pages.SignInPage;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class SignInStepDef {
 
-	SignInPage signIn= new SignInPage();
+	SignInPage signIn = new SignInPage();
+	LaunchPage lp = new LaunchPage();
 
-@When("User clicks on Sign-in link")
-public void user_clicks_on_sign_in_link() {
-	signIn.clickOnSignIn();
-}
+	@Given("User is in Sign-Page.")
+	public void user_is_in_sign_page() {
 
-@Then("User should be in Sign-in Page")
-public void user_should_be_in_sign_in_page() {
-    signIn.verifySiginPage();
-}
+		lp.launchApplication();
+		lp.clickGetStarted();
 
-@When("User clicks on Sign-in link on the Page")
-public void user_clicks_on_sign_in_link_on_the_page() {
-    
-}
+		signIn.clickOnSignIn();
 
-@Given("User is in Sign-in Page")
-public void user_is_in_sign_in_page() {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
-}
+	}
 
-@When("User enters valid credentials and clicks on Login")
-public void user_enters_valid_credentials_and_clicks_on_login() {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
-}
+	@When("User clicks on Sign-in link on Sign-In Page.")
+	public void user_clicks_on_sign_in_link_on_sign_in_page() {
 
-@Then("Expected Message should be displayed")
-public void expected_message_should_be_displayed() {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
-}
+		signIn.clickOnSignIn();
+	}
 
-@When("User enters invalid credentials and clicks on Login")
-public void user_enters_valid_credentials_and_clicks_on_login(io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-	
-	
-    throw new io.cucumber.java.PendingException();
-}
+	@Then("User Sign-In page should be dispalyed.")
+	public void user_sign_in_page_should_be_dispalyed() {
 
+		Assert.assertEquals(signIn.getPageTitle(), "Login");
+	}
+
+	@When("User clicks on {string} link in Sign-In Page.")
+	public void user_clicks_on_link_in_sign_in_page(String registerLink) {
+
+		signIn.clickLink(registerLink);
+
+	}
+
+	@Then("User should be redirected to register Page.")
+	public void user_should_be_redirected_to_register_page() {
+		Assert.assertEquals(signIn.getPageTitle(), "Registration");
+	}
+
+//	@When("User clicks on {string} link  below username and password field of Sign-In Page.")
+//	public void user_clicks_on_link_below_username_and_password_field_of_sign_in_page(String string) {
+//		
+//	}
+
+	@When("User enters {string},{string} and clicks on Login.")
+	public void user_enters_and_clicks_on_login(String username, String password) throws InterruptedException {
+		signIn.Login(username, password);
+
+	}
+
+	@Then("{string} should be displayed.")
+	public void should_be_displayed(String loginMsg) {
+
+		Assert.assertEquals(signIn.verifySuccesfulLogin().strip(), loginMsg);
+	}
 }
