@@ -60,6 +60,8 @@ public class SignInPage {
 	// linkLocators.put("register!", register2Link);
 
 	public void clickOnSignIn() {
+
+		logger.info("Click On SignIn Link : Start");
 		signInLink.click();
 
 	}
@@ -69,6 +71,7 @@ public class SignInPage {
 //	}
 
 	public String getPageTitle() {
+		logger.info("Verify Page Title : " + driver.getTitle());
 		return driver.getTitle();
 	}
 
@@ -85,26 +88,37 @@ public class SignInPage {
 //	}
 
 	public void clickLink(String linkName) {
+		logger.info("Click on " + linkName + ":Start");
 		WebElement linkElement = registerLink.get(linkName);
 
 		if (linkElement != null) {
 
 			linkElement.click();
+			logger.info("Click on " + linkName + ":Pass");
 		} else {
+			logger.info("Click on " + linkName + ":Fail");
 			throw new IllegalArgumentException("Link name not found in locator map: " + linkName);
 		}
 
 	}
 
 	public void Login(String username, String password) {
-
+		logger.info("Login for " + username + " :Start");
 		UsernameInputbox.sendKeys(username);
 		PasswordInputbox.sendKeys(password);
 		LoginButton.click();
 
 	}
 
+	public void SignIn(String username, String password) {
+		logger.info("Login for " + username + " :Start");
+		UsernameInputbox.sendKeys(username);
+		PasswordInputbox.sendKeys(password);
+		LoginButton.click();
+	}
+
 	public String verifySuccesfulLogin() {
+		logger.info("Verify Login : " + LoginAlert.getText());
 		return LoginAlert.getText();
 	}
 
