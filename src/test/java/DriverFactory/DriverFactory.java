@@ -15,17 +15,13 @@ public class DriverFactory {
 	private static final Logger logger = LogManager.getLogger(DriverFactory.class);
 	private static final ThreadLocal<WebDriver> tldriver = new ThreadLocal<>();
 	private static ThreadLocal<String> plbrowser = new ThreadLocal<>();
-
-	// ThreadLocal<>();
+	
 	private static WebDriver driver;
-	// private static String plbrowser;
-
+	
 	public static WebDriver getDriver() {
 		return tldriver.get();
 
 	}
-
-	// private static String plbrowser;
 
 	public static void setupBrowser(String browser) {
 		plbrowser.set(browser);
@@ -34,14 +30,12 @@ public class DriverFactory {
 	}
 
 	public static void initDriver() {
-		// String browserName = ConfigReader.getProperty("browser");
-		// String browserName = System.getProperty("browser");
-		// String browserName = ScenarioContext.get("browser");
+		
 
 		String browserName = plbrowser.get();
 		System.out.println(browserName);
 		logger.info("You selected " + browserName + " to run these tests");
-		// WebDriver instance = new ChromeDriver();
+		
 		if (browserName.trim().equalsIgnoreCase("chrome")) {
 			tldriver.set(new ChromeDriver());
 
