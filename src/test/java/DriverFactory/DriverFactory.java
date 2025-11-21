@@ -1,5 +1,7 @@
 package DriverFactory;
 
+import java.time.Duration;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -7,28 +9,57 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import Utils.ConfigReader;
+import io.cucumber.java.After;
 
 public class DriverFactory {
 	private static final Logger logger = LogManager.getLogger(DriverFactory.class);
-	private static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
-
+	private static final ThreadLocal<WebDriver> tldriver = new ThreadLocal<>();
+	private static ThreadLocal<String> plbrowser = new ThreadLocal<>();
+	
+	private static WebDriver driver;
+	
 	public static WebDriver getDriver() {
-		return tlDriver.get();
+		return tldriver.get();
+
 	}
 
-	public static void initDriver(String browserName) {
-	//	String browserName = ConfigReader.getProperty("browser");
-		logger.info("You selected "+browserName+ " to run these tests");
+	public static void setupBrowser(String browser) {
+		plbrowser.set(browser);
+		System.out.println(browser);
 
-		if (browserName.equalsIgnoreCase("chrome")) {
-			tlDriver.set(new ChromeDriver());
+	}
+
+	public static void initDriver() {
+		
+
+		String browserName = plbrowser.get();
+		System.out.println(browserName);
+		logger.info("You selected " + browserName + " to run these tests");
+		
+		if (browserName.trim().equalsIgnoreCase("chrome")) {
+			tldriver.set(new ChromeDriver());
+
 		} else if (browserName.trim().equalsIgnoreCase("firefox")) {
-			tlDriver.set(new FirefoxDriver());
+			tldriver.set(new FirefoxDriver());
+
 		} else if (browserName.trim().equalsIgnoreCase("edge")) {
-			tlDriver.set( new EdgeDriver());
+			tldriver.set(new EdgeDriver());
+
+		} else {
+			logger.info("You selected wrong browser: " + browserName);
+			return;
 		}
-		else tlDriver.set(new FirefoxDriver());
-		tlDriver.get().manage().window().maximize();
+		driver = tldriver.get();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+		driver.manage().window().maximize();
+
 	}
+
+	@After(order = 0)
+	public void close() {
+
+		tldriver.remove();
+
+	}
+
 }
