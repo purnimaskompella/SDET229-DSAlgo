@@ -1,8 +1,12 @@
-
 package Pages;
 
+import java.lang.System.Logger;
 import java.util.List;
 import java.time.Duration;
+
+import org.apache.logging.log4j.LogManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,8 +19,11 @@ import DriverFactory.DriverFactory;
 import Utils.ConfigReader;
 
 public class homePage {
+
+//	private static final Logger logger = LogManager.getLogger(homePage.class);
 	private WebDriver driver;
 	WebDriverWait wait;
+	// @FindBy(xpath="//div[2][@class='navbar-nav']/ul/a[1]")
 	@FindBy(xpath = "//a[contains(text(),' Register ')]") // register link
 	WebElement registerLink;
 	@FindBy(xpath = "//input[@value='Register']") // verify registerpage
@@ -126,5 +133,8 @@ public class homePage {
 	public void gotosignin() {
 		signinLink.click();
 	}
-	
+	/*
+	 * public void login() { username.sendKeys("Test-229");
+	 * password.sendKeys("Shivagami229."); loginBtn.click(); }
+	 */
 }
