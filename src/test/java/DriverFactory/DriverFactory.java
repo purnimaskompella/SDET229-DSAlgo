@@ -9,15 +9,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import Utils.ConfigReader;
 import io.cucumber.java.After;
 
 public class DriverFactory {
 	private static final Logger logger = LogManager.getLogger(DriverFactory.class);
 	private static final ThreadLocal<WebDriver> tldriver = new ThreadLocal<>();
 	private static ThreadLocal<String> plbrowser = new ThreadLocal<>();
-	
+
 	private static WebDriver driver;
-	
+
 	public static WebDriver getDriver() {
 		return tldriver.get();
 
@@ -30,12 +31,14 @@ public class DriverFactory {
 	}
 
 	public static void initDriver() {
-		
 
 		String browserName = plbrowser.get();
+		if(browserName== null) {
+			browserName= ConfigReader.getProperty("browser");
+		}
 		System.out.println(browserName);
 		logger.info("You selected " + browserName + " to run these tests");
-		
+
 		if (browserName.trim().equalsIgnoreCase("chrome")) {
 			tldriver.set(new ChromeDriver());
 
