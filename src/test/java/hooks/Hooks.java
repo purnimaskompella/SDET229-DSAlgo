@@ -7,8 +7,6 @@ import DriverFactory.DriverFactory;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.qameta.allure.Allure;
-import java.io.ByteArrayInputStream;
 
 public class Hooks {
 	@Before
@@ -16,22 +14,23 @@ public class Hooks {
 		DriverFactory.initDriver();
 	}
 
-	@After
+	@After(order = 1)
 	public void quitBrowser(Scenario scenario) {
-       
-		
+
 		if (DriverFactory.getDriver() != null) {
 			DriverFactory.getDriver().quit();
 		}
 	}
-	
-	@After
-	public void takeScreenhot(Scenario scenario)
-	{
-	if(scenario.isFailed())
-	{
-		byte[] screenshot = ((TakesScreenshot)DriverFactory.getDriver()).getScreenshotAs(OutputType.BYTES);
-		Allure.addAttachment("Failed Screenshot", new ByteArrayInputStream(screenshot));
-	}
+
+	@After(order = 2)
+	public void takeScreenhot(Scenario scenario) {
+
+		if (scenario.isFailed()) {
+			byte[] screenshot = ((TakesScreenshot) DriverFactory.getDriver()).getScreenshotAs(OutputType.BYTES);
+			// Allure.addAttachment("Failed Screenshot", new
+			// ByteArrayInputStream(screenshot));
+
+			scenario.attach(screenshot, "image/png", screenshot.toString());
+		}
 	}
 }

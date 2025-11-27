@@ -1,6 +1,7 @@
 
 package Pages;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import DriverFactory.DriverFactory;
 
@@ -38,6 +41,11 @@ public class SignInPage {
 	@FindBy(xpath = ("//div[@role='alert']"))
 	WebElement LoginAlert;
 
+	@FindBy(xpath = ("//div[@class='col-sm']"))
+	WebElement AlertWindow;
+	@FindBy(linkText = ("Sign out"))
+	WebElement Signoutlink;
+
 	Map<String, WebElement> registerLink = new HashMap<>();
 
 	public SignInPage() {
@@ -51,41 +59,19 @@ public class SignInPage {
 
 	}
 
-	// registerLink.put("",xyz);
-
-	// Map<String, Integer> map = new HashMap<>();
-	// map.put("one", 1);
-	// map.put("two", 2);
-	// linkLocators.put("register", register1Link);
-	// linkLocators.put("register!", register2Link);
-
 	public void clickOnSignIn() {
 
 		logger.info("Click On SignIn Link : Start");
 		signInLink.click();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.urlContains("login"));
 
 	}
-
-//	public String verifySiginPage() {
-//		return driver.getTitle();
-//	}
 
 	public String getPageTitle() {
 		logger.info("Verify Page Title : " + driver.getTitle());
 		return driver.getTitle();
 	}
-
-//	public void clickOnRegister1Link() {
-//		register1Link.click();
-//	}
-
-//	public String verifyRegisterPage() {
-//		return driver.getTitle();
-//	}
-
-//	public void clickOnRegister2Link() {
-//		register2Link.click();
-//	}
 
 	public void clickLink(String linkName) {
 		logger.info("Click on " + linkName + ":Start");
@@ -107,19 +93,17 @@ public class SignInPage {
 		UsernameInputbox.sendKeys(username);
 		PasswordInputbox.sendKeys(password);
 		LoginButton.click();
+		// Screenshot.elementScreenshot("SigIn", LoginAlert);
 
-	}
-
-	public void SignIn(String username, String password) {
-		logger.info("Login for " + username + " :Start");
-		UsernameInputbox.sendKeys(username);
-		PasswordInputbox.sendKeys(password);
-		LoginButton.click();
 	}
 
 	public String verifySuccesfulLogin() {
 		logger.info("Verify Login : " + LoginAlert.getText());
 		return LoginAlert.getText();
+	}
+
+	public void Signout() {
+		Signoutlink.click();
 	}
 
 }
