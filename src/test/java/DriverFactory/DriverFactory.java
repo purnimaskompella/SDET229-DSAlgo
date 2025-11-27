@@ -30,11 +30,18 @@ public class DriverFactory {
 
 	}
 
+	public static String getBrowser() {
+
+		System.out.println("plbrosweris set to" + plbrowser.get());
+		return plbrowser.get();
+
+	}
+
 	public static void initDriver() {
 
 		String browserName = plbrowser.get();
-		if(browserName== null) {
-			browserName= ConfigReader.getProperty("browser");
+		if (browserName == null) {
+			browserName = ConfigReader.getProperty("browser");
 		}
 		System.out.println(browserName);
 		logger.info("You selected " + browserName + " to run these tests");
